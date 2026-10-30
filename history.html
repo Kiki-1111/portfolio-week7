@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historic Periods — Europe &amp; China</title>
+  <meta name="description" content="A vintage timeline comparing European and Chinese historical periods on a single scale." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f4ecd8;
+      --paper-deep: #e7d9ba;
+      --paper-edge: #d9c9a4;
+      --ink: #2f2a21;
+      --ink-soft: #5b4f3d;
+      --gold: #a8894f;
+      --gold-soft: #c8b184;
+      --rule: #cbb98f;
+      --eu: #8c3a30;
+      --eu-deep: #6a2823;
+      --cn: #39604f;
+      --cn-deep: #27453a;
+      --serif: "EB Garamond", Georgia, "Times New Roman", serif;
+      --display: "Cinzel", "EB Garamond", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: var(--serif);
+      background:
+        radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.55), transparent 58%),
+        radial-gradient(circle at 84% 92%, rgba(150, 120, 70, 0.16), transparent 55%),
+        repeating-linear-gradient(0deg, rgba(120, 95, 58, 0.03) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(90deg, rgba(120, 95, 58, 0.025) 0 1px, transparent 1px 6px),
+        linear-gradient(165deg, #f7f0de, #eee1c4 48%, #e6d7b4);
+      background-attachment: fixed;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 14px;
+      border: 1px solid rgba(120, 95, 58, 0.22);
+      box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.25), inset 0 0 0 5px rgba(120, 95, 58, 0.12);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* ===== Header ===== */
+    .masthead {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 42px 34px 20px;
+      text-align: center;
+    }
+    .masthead .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 5px 14px;
+      border: 1px solid rgba(120, 95, 58, 0.3);
+      border-radius: 2px;
+      font-family: var(--display);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: rgba(255, 252, 240, 0.5);
+    }
+    .masthead h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(26px, 4.2vw, 44px);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+    .rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 16px auto 12px;
+      max-width: 520px;
+      color: var(--gold);
+    }
+    .rule::before,
+    .rule::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(120, 95, 58, 0.5), transparent);
+    }
+    .rule span { font-size: 15px; letter-spacing: 0.4em; }
+    .masthead p {
+      margin: 0 auto;
+      max-width: 620px;
+      font-size: 16px;
+      font-style: italic;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 22px;
+      margin-top: 20px;
+      font-family: var(--display);
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 8px; }
+    .swatch {
+      width: 20px;
+      height: 9px;
+      border: 1px solid rgba(0, 0, 0, 0.35);
+      border-radius: 1px;
+    }
+    .swatch--eu { background: linear-gradient(180deg, var(--eu), var(--eu-deep)); }
+    .swatch--cn { background: linear-gradient(180deg, var(--cn), var(--cn-deep)); }
+
+    /* ===== Chart frame ===== */
+    .chart-wrap {
+      max-width: 1180px;
+      margin: 4px auto 0;
+      padding: 0 34px;
+    }
+    .chart-card {
+      position: relative;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.6), transparent 45%),
+        radial-gradient(circle at 88% 96%, rgba(160, 130, 80, 0.14), transparent 45%),
+        repeating-linear-gradient(0deg, rgba(120, 95, 58, 0.025) 0 1px, transparent 1px 3px),
+        linear-gradient(180deg, #f8f1df, #efe3c8);
+      box-shadow: 0 18px 40px rgba(90, 70, 40, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+      overflow: hidden;
+    }
+    .chart-card::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(120, 95, 58, 0.16);
+      pointer-events: none;
+      z-index: 4;
+      border-radius: 2px;
+    }
+
+    .chart-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 6px 0;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(120, 95, 58, 0.45) transparent;
+    }
+    .chart-scroll::-webkit-scrollbar { height: 10px; }
+    .chart-scroll::-webkit-scrollbar-track {
+      background: rgba(120, 95, 58, 0.08);
+      border-radius: 999px;
+      margin: 0 10px;
+    }
+    .chart-scroll::-webkit-scrollbar-thumb {
+      background: rgba(120, 95, 58, 0.4);
+      border-radius: 999px;
+      border: 2px solid #f2e8d0;
+    }
+    .chart-scroll::-webkit-scrollbar-thumb:hover { background: rgba(120, 95, 58, 0.62); }
+
+    .chart {
+      position: relative;
+      min-height: 420px;
+    }
+
+    /* Lane guides, axis, ticks */
+    .lane-guide {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(120, 95, 58, 0.1);
+      pointer-events: none;
+    }
+    .axis-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(120, 95, 58, 0.15), rgba(90, 70, 40, 0.75) 8%, rgba(90, 70, 40, 0.75) 92%, rgba(120, 95, 58, 0.15));
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+    .axis-tick {
+      position: absolute;
+      width: 1px;
+      height: 9px;
+      background: rgba(90, 70, 40, 0.45);
+    }
+    .axis-year {
+      position: absolute;
+      transform: translateX(-50%);
+      font-family: var(--display);
+      font-size: 9.5px;
+      letter-spacing: 0.08em;
+      color: rgba(80, 62, 36, 0.75);
+      white-space: nowrap;
+    }
+
+    /* Period nodes */
+    .node {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      height: 24px;
+      white-space: nowrap;
+      transition: transform 0.15s ease;
+    }
+    .node:hover { transform: translateY(-1px); z-index: 3; }
+
+    .bar {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      border: 1px solid rgba(40, 26, 18, 0.5);
+      border-radius: 2px;
+      font-family: var(--serif);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #fbf2dc;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 236, 200, 0.28), 0 2px 3px rgba(60, 45, 25, 0.22);
+      cursor: default;
+      transition: filter 0.15s ease, box-shadow 0.15s ease;
+    }
+    .node:hover .bar {
+      filter: brightness(1.14) saturate(1.06);
+      box-shadow: inset 0 1px 0 rgba(255, 236, 200, 0.35), 0 0 0 1px var(--gold-soft), 0 3px 8px rgba(60, 45, 25, 0.3);
+    }
+    .bar--eu {
+      background:
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0 6px, transparent 6px 12px),
+        linear-gradient(180deg, var(--eu), var(--eu-deep));
+    }
+    .bar--cn {
+      background:
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0 6px, transparent 6px 12px),
+        linear-gradient(180deg, var(--cn), var(--cn-deep));
+    }
+
+    .tag {
+      font-family: var(--serif);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.015em;
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+    .tag::before {
+      content: "";
+      display: inline-block;
+      width: 9px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.55;
+    }
+    .tag--eu { color: var(--eu-deep); }
+    .tag--cn { color: var(--cn-deep); }
+
+    .lbl-zh {
+      font-family: "Songti SC", "STSong", "SimSun", serif;
+      font-weight: 400;
+      opacity: 0.85;
+      margin-left: 3px;
+    }
+
+    /* ===== Footer ===== */
+    .chart-foot {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 34px 46px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 24px;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+    .chart-foot .count {
+      font-family: var(--display);
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(80, 62, 36, 0.85);
+    }
+    .scroll-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--display);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(80, 62, 36, 0.8);
+    }
+    .scroll-hint::before,
+    .scroll-hint::after {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background: rgba(120, 95, 58, 0.55);
+    }
+
+    @media (max-width: 760px) {
+      body::after { inset: 8px; }
+      .masthead { padding: 28px 18px 14px; }
+      .masthead p { font-size: 14.5px; }
+      .chart-wrap { padding: 0 14px; }
+      .chart-foot { padding: 14px 18px 32px; font-size: 12.5px; }
+      .bar { font-size: 11.5px; }
+      .tag { font-size: 11.5px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <span class="eyebrow">Interactive history lesson</span>
+    <h1>Historic Periods &mdash; Europe &amp; China</h1>
+    <div class="rule"><span>&#10086;</span></div>
+    <p>Every realm drawn to the same scale, from the Zhou dynasty to the Soviet century. Europe rules above the line, China below it.</p>
+    <div class="legend">
+      <span class="legend-item"><span class="swatch swatch--eu"></span>Europe &middot; above the line</span>
+      <span class="legend-item"><span class="swatch swatch--cn"></span>China &middot; below the line</span>
+    </div>
+  </header>
+
+  <main class="chart-wrap">
+    <div class="chart-card">
+      <div class="chart-scroll" id="chartScroll">
+        <div class="chart" id="chart"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="chart-foot">
+    <span class="count">23 European realms &middot; 13 Chinese periods &middot; one shared scale</span>
+    <span class="scroll-hint">Scroll sideways to travel in time</span>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var EU = [
+        { n: "Roman Republic", s: -509, e: -27 },
+        { n: "Western Roman Empire", s: -27, e: 476 },
+        { n: "Eastern Roman Empire", s: 330, e: 1453 },
+        { n: "Middle Ages", s: 476, e: 1453 },
+        { n: "Frankish Kingdom", s: 481, e: 843 },
+        { n: "Kievan Rus'", s: 882, e: 1240 },
+        { n: "Duchy of Normandy", s: 911, e: 1204 },
+        { n: "Kingdom of England", s: 927, e: 1707 },
+        { n: "Holy Roman Empire", s: 962, e: 1806 },
+        { n: "Grand Duchy of Moscow", s: 1283, e: 1547 },
+        { n: "Ottoman Empire", s: 1299, e: 1923 },
+        { n: "Portuguese Empire", s: 1415, e: 1999 },
+        { n: "Spanish Empire", s: 1492, e: 1898 },
+        { n: "Tsardom of Russia", s: 1547, e: 1721 },
+        { n: "Dutch Republic", s: 1581, e: 1795 },
+        { n: "Commonwealth of England", s: 1649, e: 1660 },
+        { n: "Russian Empire", s: 1721, e: 1917 },
+        { n: "First French Empire", s: 1804, e: 1815 },
+        { n: "German Confederation", s: 1815, e: 1866 },
+        { n: "Kingdom of Italy", s: 1861, e: 1946 },
+        { n: "Austro-Hungarian Empire", s: 1867, e: 1918 },
+        { n: "German Empire", s: 1871, e: 1918 },
+        { n: "Soviet Union", s: 1922, e: 1991 }
+      ];
+
+      var CN = [
+        { n: "Zhou", zh: "周", s: -1046, e: -256 },
+        { n: "Qin", zh: "秦", s: -221, e: -207 },
+        { n: "Han", zh: "汉", s: -202, e: 220 },
+        { n: "Three Kingdoms", zh: "三国", s: 220, e: 280 },
+        { n: "Jin", zh: "晋", s: 265, e: 420 },
+        { n: "Northern and Southern Dynasties", zh: "南北朝", s: 420, e: 589 },
+        { n: "Sui", zh: "隋", s: 581, e: 618 },
+        { n: "Tang", zh: "唐", s: 618, e: 907 },
+        { n: "Five Dynasties", zh: "五代", s: 907, e: 960 },
+        { n: "Song", zh: "宋", s: 960, e: 1279 },
+        { n: "Yuan", zh: "元", s: 1271, e: 1368 },
+        { n: "Ming", zh: "明", s: 1368, e: 1644 },
+        { n: "Qing", zh: "清", s: 1636, e: 1912 }
+      ];
+
+      var SCALE = 1.6;
+      var PAD_LEFT = 56;
+      var PAD_RIGHT = 300;
+      var PAD_TOP = 26;
+      var PAD_BOTTOM = 24;
+      var LANE_H = 34;
+      var BAR_H = 24;
+      var AXIS_BAND = 54;
+      var LANE_GAP_YEARS = 6;
+      var MIN_Y = -1046;
+      var MAX_Y = 1999;
+
+      var chart = document.getElementById("chart");
+      var scroller = document.getElementById("chartScroll");
+      var measure = document.createElement("canvas").getContext("2d");
+
+      function yearLabel(y) {
+        if (y < 0) return (-y) + " BC";
+        return y + " AD";
+      }
+      function rangeLabel(p) {
+        return yearLabel(p.s) + " \u2013 " + yearLabel(p.e);
+      }
+      function xFor(y) {
+        return PAD_LEFT + (y - MIN_Y) * SCALE;
+      }
+      function textWidth(txt, size, weight) {
+        measure.font = (weight || 600) + " " + size + "px 'EB Garamond', Georgia, serif";
+        return measure.measureText(txt).width;
+      }
+
+      function pack(list, side) {
+        var items = list.slice().sort(function (a, b) {
+          return a.s - b.s || a.e - b.e;
+        });
+        var lanes = [];
+        var out = [];
+
+        for (var i = 0; i < items.length; i++) {
+          var p = items[i];
+          var barW = Math.max(6, (p.e - p.s) * SCALE);
+          var full = p.n + (p.zh ? " " + p.zh : "");
+          var withYears = full + " \u00b7 " + rangeLabel(p);
+          var needIn = textWidth(withYears, 12.5, 600) + 22;
+          var needName = textWidth(full, 12.5, 600) + 22;
+          var mode = "in";
+          var label = withYears;
+
+          if (barW < needName) {
+            mode = "out";
+            label = full;
+          } else if (barW < needIn) {
+            label = full;
+          }
+
+          var reserveEnd = p.e;
+          if (mode === "out") {
+            var labelPx = textWidth(full, 12.5, 600) + 18;
+            reserveEnd = p.e + labelPx / SCALE;
+          }
+
+          var lane = -1;
+          for (var k = 0; k < lanes.length; k++) {
+            if (lanes[k] + LANE_GAP_YEARS <= p.s) { lane = k; break; }
+          }
+          if (lane === -1) {
+            lane = lanes.length;
+            lanes.push(-Infinity);
+          }
+          lanes[lane] = reserveEnd;
+
+          out.push({ p: p, lane: lane, mode: mode, label: label, barW: barW });
+        }
+        return { rows: out, lanes: lanes.length, side: side };
+      }
+
+      function build() {
+        var width = Math.round(PAD_LEFT + (MAX_Y - MIN_Y) * SCALE + PAD_RIGHT);
+        chart.innerHTML = "";
+        chart.style.width = width + "px";
+
+        var eu = pack(EU, "eu");
+        var cn = pack(CN, "cn");
+
+        var euTop = PAD_TOP;
+        var axisY = euTop + eu.lanes * LANE_H;
+        var cnTop = axisY + AXIS_BAND;
+        var height = cnTop + cn.lanes * LANE_H + PAD_BOTTOM;
+
+        chart.style.height = height + "px";
+
+        // Ruled lane guides
+        var g;
+        for (var a = 0; a < eu.lanes; a++) {
+          g = document.createElement("div");
+          g.className = "lane-guide";
+          g.style.top = (euTop + a * LANE_H + LANE_H - 1) + "px";
+          chart.appendChild(g);
+        }
+        for (var b = 0; b < cn.lanes; b++) {
+          g = document.createElement("div");
+          g.className = "lane-guide";
+          g.style.top = (cnTop + b * LANE_H + LANE_H - 1) + "px";
+          chart.appendChild(g);
+        }
+
+        // Central axis
+        var axis = document.createElement("div");
+        axis.className = "axis-line";
+        axis.style.top = axisY + "px";
+        chart.appendChild(axis);
+
+        for (var y = -1000; y <= 2000; y += 100) {
+          if (y === 0) continue;
+          var tx = xFor(y);
+          var tick = document.createElement("div");
+          tick.className = "axis-tick";
+          tick.style.left = tx + "px";
+          tick.style.top = (axisY - 4) + "px";
+          chart.appendChild(tick);
+
+          var yr = document.createElement("div");
+          yr.className = "axis-year";
+          yr.style.left = tx + "px";
+          yr.style.top = (axisY + 12) + "px";
+          yr.textContent = yearLabel(y);
+          chart.appendChild(yr);
+        }
+
+        addNodes(eu.rows, euTop, "eu");
+        addNodes(cn.rows, cnTop, "cn");
+      }
+
+      function addNodes(rows, top, side) {
+        for (var i = 0; i < rows.length; i++) {
+          var row = rows[i];
+          var node = document.createElement("div");
+          node.className = "node";
+          node.style.left = xFor(row.p.s) + "px";
+          node.style.top = (top + row.lane * LANE_H + (LANE_H - BAR_H) / 2) + "px";
+          node.title = row.p.n + (row.p.zh ? " " + row.p.zh : "") + " \u2014 " + rangeLabel(row.p);
+
+          var bar = document.createElement("div");
+          bar.className = "bar bar--" + side;
+          bar.style.width = row.barW + "px";
+          if (row.mode === "in") {
+            bar.textContent = row.label;
+          }
+          node.appendChild(bar);
+
+          if (row.mode === "out") {
+            var tag = document.createElement("span");
+            tag.className = "tag tag--" + side;
+            tag.textContent = row.p.n;
+            if (row.p.zh) {
+              var zh = document.createElement("span");
+              zh.className = "lbl-zh";
+              zh.textContent = row.p.zh;
+              tag.appendChild(zh);
+            }
+            node.appendChild(tag);
+          }
+
+          chart.appendChild(node);
+        }
+      }
+
+      document.fonts && document.fonts.ready
+        ? document.fonts.ready.then(build)
+        : build();
+
+      var resizeTimer = 0;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(build, 180);
+      });
+    })();
+  </script>
+</body>
+</html>
